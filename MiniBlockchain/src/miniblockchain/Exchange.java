@@ -16,7 +16,7 @@ public class Exchange {
     private String nombre;
     private String domicilio;
     private double patrimonioNet;
-    private ArrayList<Usuario> usuarios = new ArrayList();
+    public ArrayList<Usuario> usuarios = new ArrayList();
 
     public Exchange(String nombre, String domicilio, double patrimonioNet) {
         this.nombre = nombre;
@@ -97,4 +97,18 @@ public class Exchange {
         }
 
     }
+
+    public Usuario buscarUsuario(String dni) {
+        for (int i = 0; i < this.usuarios.size(); i++) {
+            if (this.usuarios.get(i).getDni().equalsIgnoreCase(dni)) {
+                return this.usuarios.get(i);
+
+            }
+
+        }
+        return null;
+    }
+
+   
+
 }

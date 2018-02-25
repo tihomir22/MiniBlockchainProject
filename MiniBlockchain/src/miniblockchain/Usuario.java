@@ -18,8 +18,9 @@ public class Usuario {
     private String correo;
     private boolean documentacion;
     private String numTel;
-    private double inversion;
-    private ArrayList<Transaccion> listaTransU = new ArrayList();
+    public double inversion;
+    public ArrayList<Wallet> wallets = new ArrayList();
+    public ArrayList<Transaccion> listaTransU = new ArrayList();
 
     public Usuario(String nombre, String dni, String correo, boolean documentacion, String numTel, double inversion) {
         this.nombre = nombre;
@@ -28,6 +29,14 @@ public class Usuario {
         this.documentacion = documentacion;
         this.numTel = numTel;
         this.inversion = inversion;
+    }
+
+    public ArrayList<Wallet> getWallets() {
+        return wallets;
+    }
+
+    public void setWallets(ArrayList<Wallet> wallets) {
+        this.wallets = wallets;
     }
 
     public String getNombre() {
@@ -86,4 +95,51 @@ public class Usuario {
         this.listaTransU = listaTransU;
     }
 
+    public void añadirWallet(Wallet w) {
+        this.wallets.add(w);
+    }
+
+    public void mostrarDatosUsuario() {
+        System.out.println("NOMBRE " + "\t" + "DNI" + "\t" + "DOCUMENTACION" + "\t" + "NUMTEL" + "\t" + "INVERSION" + "\t");
+        System.out.println(this.nombre + "\t" + this.dni + "\t" + this.documentacion + "\t" + this.numTel + "\t" + this.inversion + "€" + "\t");
+        System.out.println("Wallets del usuario :");
+        for (int i = 0; i < this.wallets.size(); i++) {
+            System.out.println("");
+            System.out.println("************************************");
+            System.out.println(this.wallets.get(i).getClavePublica());
+            System.out.println(this.wallets.get(i).getClavePrivada());
+            System.out.println("************************************");
+        }
+        System.out.println("Transaccion del usuario");
+        for (int i = 0; i < this.listaTransU.size(); i++) {
+            System.out.println("");
+            System.out.println("************************************");
+            System.out.println(this.listaTransU.get(i).getFecha());
+            System.out.println(this.listaTransU.get(i).getDestinatario());
+            System.out.println(this.listaTransU.get(i).getEmisor());
+            System.out.println(this.listaTransU.get(i).getImporteDolar());
+            System.out.println("************************************");
+        }
+
+    }
+
+    public void mostrarWalletsUsuario() {
+        for (int i = 0; i < this.wallets.size(); i++) {
+            System.out.println("");
+            System.out.println("************************************");
+            System.out.println(this.wallets.get(i).getClavePublica());
+            System.out.println(this.wallets.get(i).getClavePrivada());
+            System.out.println("************************************");
+        }
+    }
+
+    public Wallet buscarWallet(String busqueda) {
+        for (int i = 0; i < this.wallets.size(); i++) {
+            if (this.wallets.get(i).getClavePublica().equalsIgnoreCase(busqueda)) {
+                return this.wallets.get(i);
+
+            }
+        }
+        return null;
+    }
 }
