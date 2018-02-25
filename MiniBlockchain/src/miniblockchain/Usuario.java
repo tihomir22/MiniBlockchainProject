@@ -124,11 +124,20 @@ public class Usuario {
     }
 
     public void mostrarWalletsUsuario() {
+
         for (int i = 0; i < this.wallets.size(); i++) {
             System.out.println("");
             System.out.println("************************************");
             System.out.println(this.wallets.get(i).getClavePublica());
             System.out.println(this.wallets.get(i).getClavePrivada());
+            System.out.println(this.wallets.get(i).getDueño());
+            System.out.println(this.wallets.get(i).getMonedas().size());
+
+            if (!this.wallets.get(i).getMonedas().isEmpty()) {
+                for (int j = 0; j < this.wallets.get(i).getMonedas().size(); j++) {
+                    this.wallets.get(i).getMonedas().get(j).mostrarCriptomoneda();
+                }
+            }
             System.out.println("************************************");
         }
     }

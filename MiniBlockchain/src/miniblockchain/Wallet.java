@@ -21,12 +21,11 @@ public class Wallet {
     public ArrayList<Criptomonedas> monedas = new ArrayList();
     public ArrayList<Transaccion> listaTransW = new ArrayList();
 
-    public Wallet(String clavePrivada, String clavePublica, int balanceDolares, Usuario dueño, Criptomonedas monedas) {
+    public Wallet(String clavePrivada, String clavePublica, int balanceDolares, Usuario dueño) {
         this.clavePrivada = clavePrivada;
         this.clavePublica = clavePublica;
         this.balanceDolares = balanceDolares;
         this.dueño = dueño;
-
     }
 
     Wallet() {
@@ -97,6 +96,10 @@ public class Wallet {
         return clave;
 
     }
-    
+
+    public void añadirCriptomoneda(Criptomonedas c) {
+        this.monedas.add(c);
+
+    }
 
 }

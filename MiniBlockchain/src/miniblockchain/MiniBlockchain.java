@@ -96,11 +96,20 @@ public class MiniBlockchain {
                     break;
 
                 case 4:
-                    bitcoin = new Criptomonedas("Bitcoin", 10000, true, 161);
-                    ethereum = new Criptomonedas("Ethereum", 860, true, 96);
-                    iota = new Criptomonedas("IOTA", 2, false, 7);
-                    System.out.println("Elige una moneda a comprar :");
+                    bitcoin = new Criptomonedas("Bitcoin", 10000, true, 161, 0);
+                    ethereum = new Criptomonedas("Ether", 860, true, 96, 0);
+                    iota = new Criptomonedas("IOTA", 2, false, 7, 0);
+                    System.out.println("Las monedas fueron dadas de alta y añadidas a su cartera");
+                    bitcoin.mostrarCriptomoneda();
+                    ethereum.mostrarCriptomoneda();
+                    iota.mostrarCriptomoneda();
 
+                    activoW = activo.buscarWallet(activo.wallets.get(0).getClavePublica());
+                    activoW.añadirCriptomoneda(iota);
+                    activoW.añadirCriptomoneda(bitcoin);
+                    activoW.añadirCriptomoneda(ethereum);
+
+                    activo.mostrarWalletsUsuario();
                     break;
 
                 case 5:
