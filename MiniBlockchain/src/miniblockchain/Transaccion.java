@@ -6,6 +6,7 @@
 package miniblockchain;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -13,12 +14,12 @@ import java.util.Calendar;
  */
 public class Transaccion {
 
-    private Calendar fecha;
+    private Date fecha;
     private double importeDolar;
     public Wallet destinatario;
     public Wallet emisor;
 
-    public Transaccion(Calendar fecha, double importeDolar, Wallet destinatario, Wallet emisor) {
+    public Transaccion(Date fecha, double importeDolar, Wallet destinatario, Wallet emisor) {
         this.fecha = fecha;
         this.importeDolar = importeDolar;
         this.destinatario = destinatario;
@@ -29,11 +30,11 @@ public class Transaccion {
 
     }
 
-    public Calendar getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(Calendar fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

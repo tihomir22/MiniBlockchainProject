@@ -29,6 +29,14 @@ public class Criptomonedas {
         return nombre;
     }
 
+    public double getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(double cantidad) {
+        this.cantidad = cantidad;
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -58,8 +66,8 @@ public class Criptomonedas {
     }
 
     public void mostrarCriptomoneda() {
-        System.out.println("Nombre" + "\t" + "Cap" + "\t" + "Minable" + "\t" + "Valor en $" + "\t");
-        System.out.println(this.nombre + "\t" + this.capMerca + "B$" + "\t" + this.minable + "\t" + this.precioDolares + "$" + "\t");
+        System.out.println("Nombre" + "\t" + "Cap" + "\t" + "Minable" + "\t" + "Valor en $" + "\t" + "Cantidad" + "\t");
+        System.out.println(this.nombre + "\t" + this.capMerca + "B$" + "\t" + this.minable + "\t" + this.precioDolares + "$" + "\t" + this.cantidad + "\t");
     }
 
 }

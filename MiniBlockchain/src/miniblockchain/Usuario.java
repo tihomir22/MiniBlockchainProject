@@ -108,6 +108,7 @@ public class Usuario {
             System.out.println("************************************");
             System.out.println(this.wallets.get(i).getClavePublica());
             System.out.println(this.wallets.get(i).getClavePrivada());
+            System.out.println(this.wallets.get(i).getBalanceDolares()+"$");
             System.out.println("************************************");
         }
         System.out.println("Transaccion del usuario");
@@ -131,11 +132,15 @@ public class Usuario {
             System.out.println(this.wallets.get(i).getClavePublica());
             System.out.println(this.wallets.get(i).getClavePrivada());
             System.out.println(this.wallets.get(i).getDueño());
-            System.out.println(this.wallets.get(i).getMonedas().size());
+            System.out.println(this.wallets.get(i).getMonedas().size() + "Numero de criptomonedas");
+            System.out.println("");
+            System.out.println("************************************");
 
             if (!this.wallets.get(i).getMonedas().isEmpty()) {
                 for (int j = 0; j < this.wallets.get(i).getMonedas().size(); j++) {
                     this.wallets.get(i).getMonedas().get(j).mostrarCriptomoneda();
+                    System.out.println("Su monto total ascende a " + this.wallets.get(i).calcularDolares() + "€");
+                    this.inversion = this.wallets.get(i).calcularDolares();
                 }
             }
             System.out.println("************************************");

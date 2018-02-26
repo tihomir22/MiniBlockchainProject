@@ -109,6 +109,27 @@ public class Exchange {
         return null;
     }
 
-   
+    public Wallet buscarWallet(String clave) {
+        for (int i = 0; i < this.usuarios.size()-1; i++) {
+            if (this.usuarios.get(i).wallets.get(i).getClavePublica().equalsIgnoreCase(clave)) {
+                return this.usuarios.get(i).wallets.get(i);
+
+            }
+
+        }
+        return null;
+
+    }
+
+    public Wallet buscarUsuarioPorCP(String claveprivada) {
+        for (int i = 0; i < this.usuarios.size() - 1; i++) {
+            if (this.usuarios.get(i).getWallets().get(i).getClavePublica().equalsIgnoreCase(claveprivada)) {
+                return this.usuarios.get(i).getWallets().get(i);
+
+            }
+
+        }
+        return null;
+    }
 
 }

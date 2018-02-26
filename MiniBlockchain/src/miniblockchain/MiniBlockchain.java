@@ -5,6 +5,7 @@
  */
 package miniblockchain;
 
+import java.util.Calendar;
 import java.util.Scanner;
 
 /**
@@ -23,18 +24,20 @@ public class MiniBlockchain {
         Exchange binance = new Exchange();
         Usuario usuario1 = null;
         Usuario activo = null;
-        Usuario destinatario = null;
+        Wallet destinatario = null;
         Wallet wallet1 = null;
         Wallet activoW = null;
-        Criptomonedas bitcoin = null;
-        Criptomonedas ethereum = null;
-        Criptomonedas iota = null;
+        Criptomonedas bitcoin;
+        Criptomonedas ethereum;
+        Criptomonedas iota;
         Transaccion transaccion1 = null;
         String nombre, dni, correo, telefono;
-        String clavepublica, claveprivada;
+        Calendar fecha = Calendar.getInstance();
+        String clavepublica, claveprivada, clavepublica2;
         double inversion;
         boolean documentacion;
 
+        System.out.println(fecha.getTime());
         do {
             mostrarMenu();
             opcion = teclado.nextInt();
@@ -77,82 +80,66 @@ public class MiniBlockchain {
                     teclado.nextLine();
                     dni = teclado.nextLine();
                     if (binance.buscarUsuario(dni) != null) {
-                        System.out.println("Wallets creadas exitosamente");
                         activo = binance.buscarUsuario(dni);
-                        wallet1 = new Wallet();
-                        //Generacion de atributos de wallet, claves 
-                        clavepublica = wallet1.generarCPublica(activo);
-                        wallet1.setClavePublica(clavepublica);
-                        claveprivada = wallet1.generarCPrivada(activo);
-                        wallet1.setClavePrivada(claveprivada);
-                        wallet1.setBalanceDolares(0);
-                        //Se añaden al usuario, cada usuario puede tener mas de un wallet
-                        activo.añadirWallet(wallet1);
-                        activo.mostrarDatosUsuario();
-
                     } else {
                         System.out.println("No existe tal usuario");
                     }
                     break;
 
                 case 4:
-                    bitcoin = new Criptomonedas("Bitcoin", 10000, true, 161, 0);
-                    ethereum = new Criptomonedas("Ether", 860, true, 96, 0);
-                    iota = new Criptomonedas("IOTA", 2, false, 7, 0);
-                    System.out.println("Las monedas fueron dadas de alta y añadidas a su cartera");
-                    bitcoin.mostrarCriptomoneda();
-                    ethereum.mostrarCriptomoneda();
-                    iota.mostrarCriptomoneda();
-
-                    activoW = activo.buscarWallet(activo.wallets.get(0).getClavePublica());
-                    activoW.añadirCriptomoneda(iota);
-                    activoW.añadirCriptomoneda(bitcoin);
-                    activoW.añadirCriptomoneda(ethereum);
-
-                    activo.mostrarWalletsUsuario();
+                    if (activo != null) {
+                        System.out.println("Wallets creadas exitosamente");
+                        wallet1 = new Wallet();
+                        //Generacion de atributos de wallet, claves 
+                        clavepublica = wallet1.generarCPublica(activo);
+                        wallet1.setClavePublica(clavepublica);
+                        claveprivada = wallet1.generarCPrivada(activo);
+                        wallet1.setClavePrivada(claveprivada);
+                        wallet1.setBalanceDolares(wallet1.calcularDolares());
+                        //Se añaden al usuario, cada usuario puede tener mas de un wallet
+                        activo.añadirWallet(wallet1);
+                        activo.mostrarDatosUsuario();
+                    } else {
+                        System.out.println("Debes seleccionar un usuario primero");
+                    }
                     break;
 
                 case 5:
-                    System.out.println("Introduzca dni del usuario destinatario"); // realmente para enviar una transaccion se deberia de introducir la Cpublica, pero seria muy engorroso...
-                    teclado.nextLine();
-                    dni = teclado.nextLine();
-                    destinatario = binance.buscarUsuario(dni);
-                    if (binance.buscarUsuario(dni) == activo) {
-                        System.out.println("No puedes enviarte a ti mismo");
-                        break;
-                    }
-                    if (destinatario == null) {
-                        System.out.println("No existe el usuario destino");
-                        break;
-                    }
+                    bitcoin = new Criptomonedas("Bitcoin", 10000, true, 161, 1);
+                    ethereum = new Criptomonedas("Ether", 860.352, true, 96, 1);
+                    iota = new Criptomonedas("IOTA", 2.32432, false, 7, 1);
+                    System.out.println("Las monedas fueron dadas de alta y añadidas a su cartera, sin cantidad");
+                    activoW = wallet1;
+                    activoW.añadirCriptomoneda(iota);
+                    activoW.añadirCriptomoneda(bitcoin);
+                    activoW.añadirCriptomoneda(ethereum);
+                    activoW.calcularDolares();
+                    activo.mostrarWalletsUsuario();
+                    break;
 
+                case 6:
+                    System.out.println("Introduzca clave publica del usuario destinatario");
+                    teclado.nextLine();
+                    clavepublica = teclado.nextLine();
+
+                    destinatario = binance.buscarWallet(clavepublica); //Tengo  el usuario destinatario
+
+                    ////////////////////////////////////////////////////////////////////////////////////
                     System.out.println("Desde que wallet quieres enviar fondos? ");
                     activo.mostrarWalletsUsuario();
                     clavepublica = teclado.nextLine();
+                    activoW = activo.buscarWallet(clavepublica);
+                    System.out.println("La  clave publica del emisor es " + activoW.getClavePublica());
 
-                    //El usuario elige uno de sus muchos wallets para pagar la transaccion...
-                    if (activo.buscarWallet(clavepublica) != null) {
-                        activoW = activo.buscarWallet(clavepublica);
-                        //Ya tenemos el usuario emisor y su wallet
-                        if (binance.buscarUsuario(dni) != null && binance.buscarUsuario(dni) != activo) {
-                            transaccion1 = new Transaccion();
-                            transaccion1.setEmisor(activoW);
-                            if (destinatario.wallets.size() >= 0) {
-                                transaccion1.setDestinatario(destinatario.wallets.get(0));
-                            } else {
-                                System.out.println("El destino no tiene clave generada");
-                            }
-                        }
-                        if (binance.buscarUsuario(dni) == activo) {
-                            System.out.println("No puedes enviarte a ti mismo");
-                        }
-                        if (binance.buscarUsuario(dni) == null) {
-                            System.out.println("No existe el usuario");
-                        }
+                    if (destinatario.getClavePublica().equalsIgnoreCase(activoW.getClavePublica())) { // crea error null point
+                        System.out.println("No puedes enviarte a ti mismo");
                     } else {
-                        System.out.println("No existe ese wallet por lo que no se puede realizar la transaccion");
-                    }
+                        transaccion1 = new Transaccion();
+                        transaccion1.setDestinatario(destinatario);
+                        transaccion1.setEmisor(activoW);
+                        transaccion1.setFecha(fecha.getTime());
 
+                    }
                     break;
 
             }
@@ -164,9 +151,10 @@ public class MiniBlockchain {
 
         System.out.println("1.-Mostrar informacion sobre el exchange");
         System.out.println("2.-Dar de alta al usuario");
-        System.out.println("3.-Seleccionar usuario y generar clave publica y privada de su wallet");
-        System.out.println("4.-Recargar criptomonedas en cartera");
-        System.out.println("5.-Enviar 1 BTC a la cartera de otro usuario");
+        System.out.println("3.-Seleccionar usuario");
+        System.out.println("4.-Generar clave publica y privada de su wallet");
+        System.out.println("5.-Generar criptomonedas en cartera, 1BTC,1ETH,1IOTA");
+        System.out.println("6.-Enviar 1 BTC a la cartera de otro usuario");
         System.out.println("");
         System.out.println("****************************************************");
         System.out.println("Aclaracion, para crear las claves de la wallet se usan los strings de las variables del usuario junto a funciones de la Clase Math Random,  se deben introducir datos correctos para que se generen correctamente las claves");

@@ -15,13 +15,13 @@ public class Wallet {
 
     private String clavePrivada;
     private String clavePublica;
-    private int balanceDolares;
+    private double balanceDolares;
     public Usuario dueño;
 
     public ArrayList<Criptomonedas> monedas = new ArrayList();
     public ArrayList<Transaccion> listaTransW = new ArrayList();
 
-    public Wallet(String clavePrivada, String clavePublica, int balanceDolares, Usuario dueño) {
+    public Wallet(String clavePrivada, String clavePublica, double balanceDolares, Usuario dueño) {
         this.clavePrivada = clavePrivada;
         this.clavePublica = clavePublica;
         this.balanceDolares = balanceDolares;
@@ -72,17 +72,18 @@ public class Wallet {
         this.clavePublica = clavePublica;
     }
 
-    public int getBalanceDolares() {
+    public double getBalanceDolares() {
         return balanceDolares;
     }
 
-    public void setBalanceDolares(int balanceDolares) {
+    public void setBalanceDolares(double balanceDolares) {
         this.balanceDolares = balanceDolares;
     }
 
     public String generarCPublica(Usuario activo) {
         String clave;
-        clave = "DSSWH" + activo.getDni().substring(1, 3) + activo.getNumTel().substring(3, 6);
+        int numAle = (int) (Math.random() * 100);
+        clave = "DSSWH" + activo.getDni().substring(1, 3) + activo.getNumTel().substring(1, 3) + numAle;
         return clave;
 
     }
@@ -92,7 +93,7 @@ public class Wallet {
         int numAle = (int) (Math.random() * 100);
         int numAle2 = (int) (Math.random() * 100);
         int numAle3 = (int) (Math.random() * 100);
-        clave = numAle + "LOEFF" + activo.getDni().substring(1, 3) + activo.getNumTel().substring(3, 6) + numAle2 + "CP" + activo.getDni().substring(1, 3) + activo.getDni().substring(5, 7) + numAle3;
+        clave = numAle + "LOEFF" + activo.getDni().substring(1, 3) + activo.getNumTel().substring(1, 3) + numAle2 + "CP" + activo.getDni().substring(1, 3) + activo.getDni().substring(5, 7) + numAle3;
         return clave;
 
     }
@@ -101,5 +102,16 @@ public class Wallet {
         this.monedas.add(c);
 
     }
+
+    public double calcularDolares() {
+        double importe = 0;
+        double aux;
+        for (int i = 0; i < this.monedas.size(); i++) {
+            aux = this.monedas.get(i).getCantidad() * this.monedas.get(i).getPrecioDolares();
+            importe += aux;
+        }
+        return importe;
+    }
+    
 
 }
