@@ -100,7 +100,7 @@ public class Usuario {
     }
 
     public void mostrarDatosUsuario() {
-        System.out.println("NOMBRE " + "\t" + "DNI" + "\t" + "DOCUMENTACION" + "\t" + "NUMTEL" + "\t" + "INVERSION" + "\t");
+        System.out.println("NOMBRE " + "\t" + "DNI" + "\t" + "DOCUMENTACION" + "\t" + "NUMTEL   " + "\t" + "INVERSION" + "\t");
         System.out.println(this.nombre + "\t" + this.dni + "\t" + this.documentacion + "\t" + this.numTel + "\t" + this.inversion + "€" + "\t");
         System.out.println("Wallets del usuario :");
         for (int i = 0; i < this.wallets.size(); i++) {
@@ -108,7 +108,7 @@ public class Usuario {
             System.out.println("************************************");
             System.out.println(this.wallets.get(i).getClavePublica());
             System.out.println(this.wallets.get(i).getClavePrivada());
-            System.out.println(this.wallets.get(i).getBalanceDolares()+"$");
+            System.out.println(this.wallets.get(i).getBalanceDolares() + "$");
             System.out.println("************************************");
         }
         System.out.println("Transaccion del usuario");
@@ -133,6 +133,7 @@ public class Usuario {
             System.out.println(this.wallets.get(i).getClavePrivada());
             System.out.println(this.wallets.get(i).getDueño());
             System.out.println(this.wallets.get(i).getMonedas().size() + "Numero de criptomonedas");
+            System.out.println(this.wallets.get(i).getBalanceDolares() + "$");
             System.out.println("");
             System.out.println("************************************");
 
@@ -156,4 +157,5 @@ public class Usuario {
         }
         return null;
     }
+
 }

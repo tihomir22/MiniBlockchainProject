@@ -30,11 +30,12 @@ public class MiniBlockchain {
         Criptomonedas bitcoin;
         Criptomonedas ethereum;
         Criptomonedas iota;
+        Criptomonedas monedaA;
         Transaccion transaccion1 = null;
         String nombre, dni, correo, telefono;
         Calendar fecha = Calendar.getInstance();
         String clavepublica, claveprivada, clavepublica2;
-        double inversion;
+        double inversion, cantidadF;
         boolean documentacion;
 
         System.out.println(fecha.getTime());
@@ -113,33 +114,56 @@ public class MiniBlockchain {
                     activoW.añadirCriptomoneda(iota);
                     activoW.añadirCriptomoneda(bitcoin);
                     activoW.añadirCriptomoneda(ethereum);
-                    activoW.calcularDolares();
+                    activoW.setBalanceDolares(activoW.calcularDolares());
+
                     activo.mostrarWalletsUsuario();
                     break;
 
                 case 6:
                     System.out.println("Introduzca clave publica del usuario destinatario");
                     teclado.nextLine();
-                    clavepublica = teclado.nextLine();
-
-                    destinatario = binance.buscarWallet(clavepublica); //Tengo  el usuario destinatario
+                    clavepublica2 = teclado.nextLine();
+                    destinatario = binance.buscarWallet(clavepublica2); //Tengo  el wallet destinatario
 
                     ////////////////////////////////////////////////////////////////////////////////////
                     System.out.println("Desde que wallet quieres enviar fondos? ");
                     activo.mostrarWalletsUsuario();
                     clavepublica = teclado.nextLine();
                     activoW = activo.buscarWallet(clavepublica);
-                    System.out.println("La  clave publica del emisor es " + activoW.getClavePublica());
-
-                    if (destinatario.getClavePublica().equalsIgnoreCase(activoW.getClavePublica())) { // crea error null point
-                        System.out.println("No puedes enviarte a ti mismo");
-                    } else {
-                        transaccion1 = new Transaccion();
-                        transaccion1.setDestinatario(destinatario);
-                        transaccion1.setEmisor(activoW);
-                        transaccion1.setFecha(fecha.getTime());
-
+                    System.out.println("Que quieres enviar? Introduzca nombre de criptomoneda");
+                    nombre = teclado.nextLine();
+                    System.out.println("Que cantidad quieres enviar?");
+                    cantidadF = teclado.nextDouble();
+                    monedaA = activoW.buscarCriptomoneda(nombre);
+                    if (cantidadF == 0.0) {
+                        System.out.println("No puedes enviar 0 criptomonedas");
+                        break;
                     }
+                    if (monedaA != null) {
+
+                        if (!clavepublica.equalsIgnoreCase(clavepublica2)) {
+                            System.out.println("La  clave publica del emisor es " + activoW.getClavePublica());
+                            System.out.println("La clave publica del destinatario es " + destinatario.getClavePublica());
+                            if (activoW.comprobarDestinatario(destinatario)) {
+                                System.out.println("Entramos");
+                                transaccion1 = new Transaccion();
+                                transaccion1.setDestinatario(destinatario);
+                                transaccion1.setEmisor(activoW);
+                                transaccion1.setFecha(fecha.getTime());
+                                transaccion1.setImporteDolar(monedaA.getPrecioDolares() * cantidadF);
+                                transaccion1.procesarTransaccion(activoW, destinatario);
+
+                            }
+                        } else {
+                            System.out.println("No puedes enviarte a ti mismo");
+                            break;
+                        }
+                    } else {
+                        System.out.println("Fondos insuficientesf");
+                    }
+                    break;
+                case 20:
+                    activo.mostrarDatosUsuario();
                     break;
 
             }
@@ -155,6 +179,7 @@ public class MiniBlockchain {
         System.out.println("4.-Generar clave publica y privada de su wallet");
         System.out.println("5.-Generar criptomonedas en cartera, 1BTC,1ETH,1IOTA");
         System.out.println("6.-Enviar 1 BTC a la cartera de otro usuario");
+        System.out.println("20.-Simplemente mostrar TODOS LOS DATOS del usuario seleccionado");
         System.out.println("");
         System.out.println("****************************************************");
         System.out.println("Aclaracion, para crear las claves de la wallet se usan los strings de las variables del usuario junto a funciones de la Clase Math Random,  se deben introducir datos correctos para que se generen correctamente las claves");

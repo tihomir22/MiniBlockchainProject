@@ -112,6 +112,30 @@ public class Wallet {
         }
         return importe;
     }
-    
+
+    public boolean comprobarDestinatario(Wallet destinatario) {
+
+        if (this.balanceDolares == 0) { // comprobamos que haya fondos
+            System.out.println("El emisor no tiene fondos");
+            return false;
+        }
+        if (destinatario.getClavePublica().equalsIgnoreCase("")) { // comprobamos que tenga clave publica
+            System.out.println("El destinatario no tiene clave publica");
+            return false;
+        }
+        return true;
+    }
+
+    public Criptomonedas buscarCriptomoneda(String nombre) {
+
+        for (int j = 0; j < this.monedas.size(); j++) {
+            if (nombre.equalsIgnoreCase(this.monedas.get(j).getNombre())) {
+                return this.monedas.get(j);
+            }
+        }
+
+        return null;
+
+    }
 
 }
