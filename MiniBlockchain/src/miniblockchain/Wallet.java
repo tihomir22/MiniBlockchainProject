@@ -138,4 +138,12 @@ public class Wallet {
 
     }
 
+    public void listarTransacciones() {
+        System.out.println("Emisor" + "\t" + "Destinatario" + "\t" + "\t" + "Fecha" + "\t" + "\t" + "\t" + "\t" + "Importe" + "\t");
+        for (int i = 0; i < this.listaTransW.size(); i++) {
+            System.out.print(this.listaTransW.get(i).getEmisor().getClavePublica() + "\t" + this.listaTransW.get(i).getDestinatario().getClavePublica() + "\t" + this.listaTransW.get(i).getFecha() + "\t" + this.listaTransW.get(i).getImporteDolar());
+            System.out.println("");
+        }
+    }
+
 }

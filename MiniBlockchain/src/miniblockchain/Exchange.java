@@ -110,7 +110,7 @@ public class Exchange {
     }
 
     public Wallet buscarWallet(String clave) {
-        for (int i = 0; i < this.usuarios.size()-1; i++) {
+        for (int i = 0; i < this.usuarios.size(); i++) {
             if (this.usuarios.get(i).wallets.get(i).getClavePublica().equalsIgnoreCase(clave)) {
                 return this.usuarios.get(i).wallets.get(i);
 
@@ -122,7 +122,7 @@ public class Exchange {
     }
 
     public Wallet buscarUsuarioPorCP(String claveprivada) {
-        for (int i = 0; i < this.usuarios.size() - 1; i++) {
+        for (int i = 0; i < this.usuarios.size(); i++) {
             if (this.usuarios.get(i).getWallets().get(i).getClavePublica().equalsIgnoreCase(claveprivada)) {
                 return this.usuarios.get(i).getWallets().get(i);
 

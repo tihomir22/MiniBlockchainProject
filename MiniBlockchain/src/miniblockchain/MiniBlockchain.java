@@ -127,15 +127,19 @@ public class MiniBlockchain {
                     teclado.nextLine();
                     clavepublica2 = teclado.nextLine();
                     destinatario = binance.buscarWallet(clavepublica2); //Tengo  el wallet destino
-                    if (clavepublica2.isEmpty()) {
+                    if (clavepublica2.equalsIgnoreCase(activoW.getClavePublica())) {
+                        ComprobarDestinatario = false;
+                        System.out.println("No puedes enviarte a ti mismo");
+                    }
+                    if (clavepublica2.isEmpty() && ComprobarDestinatario) {
                         ComprobarDestinatario = false;
                         System.out.println("Debes insertar una clave publica antes de continuar");
                     }
-                    if (destinatario == null && !clavepublica2.isEmpty()) {
+                    if (destinatario == null && ComprobarDestinatario) {
                         ComprobarDestinatario = false;
                         System.out.println("No existe la cartera introducida");
                     }
-                    
+
                     if (ComprobarDestinatario) {
                         ////////////////////////////////////////////////////////////////////////////////////
                         System.out.println("Desde que wallet quieres enviar fondos? ");
@@ -158,37 +162,33 @@ public class MiniBlockchain {
                             }
                             if (comprobarCriptomoneda) {
                                 if (monedaA != null) {
-
-                                    if (!clavepublica.equalsIgnoreCase(clavepublica2)) {
-                                        System.out.println("La  clave publica del emisor es " + activoW.getClavePublica());
-                                        System.out.println("La clave publica del destinatario es " + destinatario.getClavePublica());
-                                        if (activoW.comprobarDestinatario(destinatario)) {
-                                            System.out.println("Entramos");
-                                            transaccion1 = new Transaccion();
-                                            transaccion1.setDestinatario(destinatario);
-                                            transaccion1.setEmisor(activoW);
-                                            transaccion1.setFecha(fecha.getTime());
-                                            transaccion1.setImporteDolar(monedaA.getPrecioDolares() * cantidadF);
-                                            if (transaccion1.procesarTransaccion(activoW, destinatario, monedaA, cantidadF)) {
-                                                System.out.println("TRANSACCION REALIZADA CORRECTAMENTE");
-                                            }else{
-                                                System.out.println("No se pudo realizar la transaccion");
-                                            }
-
+                                    System.out.println("La  clave publica del emisor es " + activoW.getClavePublica());
+                                    System.out.println("La clave publica del destinatario es " + destinatario.getClavePublica());
+                                    if (activoW.comprobarDestinatario(destinatario)) {
+                                        System.out.println("Entramos");
+                                        transaccion1 = new Transaccion();
+                                        transaccion1.setDestinatario(destinatario);
+                                        transaccion1.setEmisor(activoW);
+                                        transaccion1.setFecha(fecha.getTime());
+                                        transaccion1.setImporteDolar(monedaA.getPrecioDolares() * cantidadF);
+                                        if (transaccion1.procesarTransaccion(activoW, destinatario, monedaA, cantidadF)) {
+                                            System.out.println("TRANSACCION REALIZADA CORRECTAMENTE");
+                                        } else {
+                                            System.out.println("No se pudo realizar la transaccion");
                                         }
-                                    } else {
-                                        System.out.println("No puedes enviarte a ti mismo");
-                                        break;
+
                                     }
-                                } else {
-                                    System.out.println("Fondos insuficientes");
+
                                 }
                             }
                         }
                     }
                     break;
                 case 20:
+                    activo.mostrarDatosUsuario();
                     activo.mostrarWalletsUsuario();
+                    activoW.listarTransacciones();
+
                     break;
 
             }
@@ -202,8 +202,8 @@ public class MiniBlockchain {
         System.out.println("2.-Dar de alta al usuario");
         System.out.println("3.-Seleccionar usuario");
         System.out.println("4.-Generar clave publica y privada de su wallet");
-        System.out.println("5.-Generar criptomonedas en cartera, 1BTC,1ETH,1IOTA");
-        System.out.println("6.-Enviar 1 BTC a la cartera de otro usuario");
+        System.out.println("5.-Generar criptomonedas en cartera, 1 BTC,1 ETH,1 IOTA. ");
+        System.out.println("6.-Enviar Criptomonedas a la cartera de otro usuario");
         System.out.println("20.-Simplemente mostrar TODOS LOS DATOS del usuario seleccionado");
         System.out.println("");
         System.out.println("****************************************************");
@@ -224,6 +224,16 @@ public class MiniBlockchain {
                 + "| |              | || |              | || |              | || |              | || |              | || |              | || |              | |\n"
                 + "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |\n"
                 + " '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' ");
+    }
+
+    public boolean comprobarIdentidad(String nombre, String dni, String email, String telefono, double inversion) {
+        for (int i = 0; i < nombre.length(); i++) {
+            if (nombre.charAt(i) == '0' || nombre.charAt(i) == '1' || nombre.charAt(i) == '2' || nombre.charAt(i) == '3' || nombre.charAt(i) == '4' || nombre.charAt(i) == '5' || nombre.charAt(i) == '6' || nombre.charAt(i) == '7' || nombre.charAt(i) == '8' || nombre.charAt(i) == '9') {
+                System.out.println("No puede contener numeros el nombre");
+                return false;
+            }
+        }
+        return false;
     }
 
 }

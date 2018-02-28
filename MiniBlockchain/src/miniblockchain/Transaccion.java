@@ -85,6 +85,7 @@ public class Transaccion {
 
         origen.listaTransW.add(this);
         origen.setBalanceDolares(origen.getBalanceDolares() - this.getImporteDolar());
+        
         destino.listaTransW.add(this);
         destino.setBalanceDolares(destino.getBalanceDolares() + this.getImporteDolar());
 
