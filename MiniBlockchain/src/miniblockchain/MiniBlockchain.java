@@ -120,50 +120,75 @@ public class MiniBlockchain {
                     break;
 
                 case 6:
+                    boolean ComprobarDestinatario = true;
+                    boolean comprobarCriptomoneda = true;
+
                     System.out.println("Introduzca clave publica del usuario destinatario");
                     teclado.nextLine();
                     clavepublica2 = teclado.nextLine();
-                    destinatario = binance.buscarWallet(clavepublica2); //Tengo  el wallet destinatario
-
-                    ////////////////////////////////////////////////////////////////////////////////////
-                    System.out.println("Desde que wallet quieres enviar fondos? ");
-                    activo.mostrarWalletsUsuario();
-                    clavepublica = teclado.nextLine();
-                    activoW = activo.buscarWallet(clavepublica);
-                    System.out.println("Que quieres enviar? Introduzca nombre de criptomoneda");
-                    nombre = teclado.nextLine();
-                    System.out.println("Que cantidad quieres enviar?");
-                    cantidadF = teclado.nextDouble();
-                    monedaA = activoW.buscarCriptomoneda(nombre);
-                    if (cantidadF == 0.0) {
-                        System.out.println("No puedes enviar 0 criptomonedas");
-                        break;
+                    destinatario = binance.buscarWallet(clavepublica2); //Tengo  el wallet destino
+                    if (clavepublica2.isEmpty()) {
+                        ComprobarDestinatario = false;
+                        System.out.println("Debes insertar una clave publica antes de continuar");
                     }
-                    if (monedaA != null) {
-
-                        if (!clavepublica.equalsIgnoreCase(clavepublica2)) {
-                            System.out.println("La  clave publica del emisor es " + activoW.getClavePublica());
-                            System.out.println("La clave publica del destinatario es " + destinatario.getClavePublica());
-                            if (activoW.comprobarDestinatario(destinatario)) {
-                                System.out.println("Entramos");
-                                transaccion1 = new Transaccion();
-                                transaccion1.setDestinatario(destinatario);
-                                transaccion1.setEmisor(activoW);
-                                transaccion1.setFecha(fecha.getTime());
-                                transaccion1.setImporteDolar(monedaA.getPrecioDolares() * cantidadF);
-                                transaccion1.procesarTransaccion(activoW, destinatario);
-
-                            }
-                        } else {
-                            System.out.println("No puedes enviarte a ti mismo");
-                            break;
+                    if (destinatario == null && !clavepublica2.isEmpty()) {
+                        ComprobarDestinatario = false;
+                        System.out.println("No existe la cartera introducida");
+                    }
+                    
+                    if (ComprobarDestinatario) {
+                        ////////////////////////////////////////////////////////////////////////////////////
+                        System.out.println("Desde que wallet quieres enviar fondos? ");
+                        activo.mostrarWalletsUsuario();
+                        clavepublica = teclado.nextLine();
+                        if (clavepublica2.equalsIgnoreCase(clavepublica)) {
+                            ComprobarDestinatario = false;
+                            System.out.println("No puedes enviar a la misma clave publica");
                         }
-                    } else {
-                        System.out.println("Fondos insuficientesf");
+                        if (ComprobarDestinatario) {
+                            activoW = activo.buscarWallet(clavepublica);
+                            System.out.println("Que quieres enviar? Introduzca nombre de criptomoneda");
+                            nombre = teclado.nextLine();
+                            System.out.println("Que cantidad quieres enviar?");
+                            cantidadF = teclado.nextDouble();
+                            monedaA = activoW.buscarCriptomoneda(nombre);
+                            if (cantidadF == 0 || cantidadF == 0.0) {
+                                System.out.println("No puedes enviar 0 criptomonedas");
+                                comprobarCriptomoneda = false;
+                            }
+                            if (comprobarCriptomoneda) {
+                                if (monedaA != null) {
+
+                                    if (!clavepublica.equalsIgnoreCase(clavepublica2)) {
+                                        System.out.println("La  clave publica del emisor es " + activoW.getClavePublica());
+                                        System.out.println("La clave publica del destinatario es " + destinatario.getClavePublica());
+                                        if (activoW.comprobarDestinatario(destinatario)) {
+                                            System.out.println("Entramos");
+                                            transaccion1 = new Transaccion();
+                                            transaccion1.setDestinatario(destinatario);
+                                            transaccion1.setEmisor(activoW);
+                                            transaccion1.setFecha(fecha.getTime());
+                                            transaccion1.setImporteDolar(monedaA.getPrecioDolares() * cantidadF);
+                                            if (transaccion1.procesarTransaccion(activoW, destinatario, monedaA, cantidadF)) {
+                                                System.out.println("TRANSACCION REALIZADA CORRECTAMENTE");
+                                            }else{
+                                                System.out.println("No se pudo realizar la transaccion");
+                                            }
+
+                                        }
+                                    } else {
+                                        System.out.println("No puedes enviarte a ti mismo");
+                                        break;
+                                    }
+                                } else {
+                                    System.out.println("Fondos insuficientes");
+                                }
+                            }
+                        }
                     }
                     break;
                 case 20:
-                    activo.mostrarDatosUsuario();
+                    activo.mostrarWalletsUsuario();
                     break;
 
             }
